@@ -80,6 +80,7 @@ if (!class_exists('Czater')) {
             add_option("CzaterId", "0");
             add_option("czaterCode", "1");
             add_option("css_template", "");
+            add_option("czaterForLoggedUsers", "1");
             add_option("czaterAutoCompliteLogin", "1");
             add_option("czaterAutoCompliteEmail", "1");
         }
@@ -107,6 +108,7 @@ if (!class_exists('Czater')) {
                 }
 
                 update_option('czaterCode', stripslashes_deep($_POST['czaterCode']));
+                update_option('czaterForLoggedUsers', sanitize_text_field(trim($_POST['czaterForLoggedUsers'])));
                 update_option('czaterAutoCompliteLogin', sanitize_text_field(trim($_POST['czaterAutoCompliteLogin'])));
                 update_option('czaterAutoCompliteEmail', sanitize_text_field(trim($_POST['czaterAutoCompliteEmail'])));
                 echo "<p style='background:#bfb;padding:20px;b'>Twój czat już działa na Twojej stronie.</p>";
@@ -121,6 +123,11 @@ if (!class_exists('Czater')) {
             </p>
             <form method="post" action="<?php echo admin_url('admin.php?page=czater_settings_page') ?>">
                 <textarea name="czaterCode" ><?php echo get_option("czaterCode"); ?></textarea><br/>
+                <?php if (get_option("czaterForLoggedUsers") == 1) { ?>
+                    <label><input type="checkbox" name="czaterForLoggedUsers" value="1" checked="checked"> Pokazuj czater zalogowanym uzytkownikom</label><br/>
+                <?php } else { ?>
+                    <label><input type="checkbox" name="czaterForLoggedUsers" value="1"> Pokazuj czater zalogowanym uzytkownikom</label><br/>
+                <?php } ?>
                 <?php if (get_option("czaterAutoCompliteLogin") == 1) { ?>
                     <label><input type="checkbox" name="czaterAutoCompliteLogin" value="1" checked="checked"> Automatycznie wypelniaj login</label><br/>
                 <?php } else { ?>
@@ -128,9 +135,9 @@ if (!class_exists('Czater')) {
                 <?php } ?>
                 <?php if (get_option("czaterAutoCompliteEmail") == 1) { ?>
                     <label><input type="checkbox" name="czaterAutoCompliteEmail" value="1" checked="checked"> Automatycznie wypelniaj email</label><br/>
-            <?php } else { ?>
+                <?php } else { ?>
                     <label><input type="checkbox" name="czaterAutoCompliteEmail" value="1"> Automatycznie wypelniaj email</label><br/>
-            <?php } ?>
+                <?php } ?>
                 <input type="submit" value="zapisz" name="send"/>
             </form>    
             <?php
